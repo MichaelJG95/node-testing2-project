@@ -20,4 +20,50 @@ server.get('/singers', (req, res) => {
         })
 })
 
+server.get("/singers/:id", (req, res) => {
+    Singers.getById(req.params.id)
+      .then(singer => {
+        if(singer == null) {
+          res.status(404).json({ message: 'Singer not found' });
+          return;
+        }
+        res.status(200).json(singer);
+      });
+  });
+  
+  server.post("/singers", (req, res) => {
+    Singers.insert(req.body)
+      .then(singer => {
+        res.status(201).json(singer);
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      })
+  });
+  
+  server.delete("/singers/:id", (req, res) => {
+    Singers.remove(req.params.id)
+      .then(singer => {
+        if(singer == null) {
+          res.status(404).json({ message: 'Singer not found' });
+          return;
+        }
+        res.status(200).json(singer);
+      });
+  });
+  
+  server.put("/singers/:id", (req, res) => {
+    Singers.update(req.params.id, req.body)
+      .then(singer => {
+        if(singer == null) {
+          res.status(404).json({ message: 'Singer not found' });
+          return;
+        }
+        res.status(200).json(singer);
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      })
+  });
+
 module.exports = server;
